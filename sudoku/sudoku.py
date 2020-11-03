@@ -108,7 +108,6 @@ class SudokuCheckQuestion(SudokuBase):
 class Sudoku(SudokuBase):
     def __init__(self, question):
         super().__init__(question)
-        self._unit = int(sqrt(self._size))
         self._next_position = self._search_max_constraint()
         self._next_r = self._next_position['r']
         self._next_c = self._next_position['c']
@@ -122,8 +121,8 @@ class Sudoku(SudokuBase):
 
     def _output_square_range(self, i):
         sqrt_idx = i // self._unit
-        idx_min = sqrt_idx * int(self._unit)
-        idx_max = (sqrt_idx + 1) * int(self._unit)
+        idx_min = sqrt_idx * self._unit
+        idx_max = (sqrt_idx + 1) * self._unit
         return {'idx_min': idx_min, 'idx_max': idx_max}
 
     def _search_max_constraint(self):
