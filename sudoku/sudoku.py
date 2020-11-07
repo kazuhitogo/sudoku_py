@@ -66,7 +66,8 @@ class SudokuBase:
                         print('-', end='')
                 print('')
             for c in range(self._size):
-                display_string = str(self._question[r][c]).zfill(self._digit)
+                display_string = self._question[r][c] if self._question[r][c] != 0 else " "
+                display_string = str(display_string).rjust(self._digit, " ")
                 if c % self._unit == self._unit - 1 and c != self._size - 1 and c != 0:
                     display_string += '|'
                 elif c == self._size - 1:
@@ -138,14 +139,14 @@ class Sudoku(SudokuBase):
                     for x in range(r_idx['idx_min'], r_idx['idx_max']):
                         for y in range(c_idx['idx_min'], c_idx['idx_max']):
                             if self._question[x][y] != 0:
-                                counter[self._question[r][c] - 1] = 1
+                                counter[self._question[x][y] - 1] = 1
                     # row check
                     for y in range(self._size):
                         if self._question[r][y] != 0:
                             counter[self._question[r][y] - 1] = 1
                     # col check
                     for x in range(self._size):
-                        if self._question[x][c]:
+                        if self._question[x][c] != 0:
                             counter[self._question[x][c] - 1] = 1
                     for count in counter:
                         strength += count
