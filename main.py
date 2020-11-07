@@ -1,4 +1,4 @@
-import csv, queue
+import csv, queue, time
 from sys import argv
 from sudoku.sudoku import SudokuCheckQuestion, Sudoku
 
@@ -10,6 +10,7 @@ def read_csv(path):
 
 
 def main(d):
+    start_time = time.time()
     question = SudokuCheckQuestion(d)
     question.verbose = True
     if question.get_valid():
@@ -24,15 +25,21 @@ def main(d):
         counter = 0
         could_solve = False
         while lifo_q:
-            counter += 1
             q = lifo_q.get(timeout=3)
             if q.check_insert():
                 q.set_next_value_to_question()
+                counter += 1
                 if q.check_complete():
                     could_solve = True
                     print('\nThe answer is ...')
                     q.print_question()
                     print(f'counter: {counter}')
+
+                    end_time = time.time()
+
+                    exec_time = end_time - start_time
+                    print(f'exec time: {str(exec_time)}')
+
                     break
                 for i in range(question.get_size(), 0, -1):
                     q = Sudoku(q.get_question())
